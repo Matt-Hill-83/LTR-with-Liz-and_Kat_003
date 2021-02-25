@@ -2,6 +2,7 @@ local Sss = game:GetService('ServerScriptService')
 
 local Utils = require(Sss.Source.Utils.U001GeneralUtils)
 local Constants = require(Sss.Source.Constants.Constants)
+local soundConstants = require(Sss.Source.Constants.Const_05_Audio)
 local LevelConfigs = require(Sss.Source.LevelConfigs.LevelConfigs)
 local ConfigRemoteEvents = require(Sss.Source.AddRemoteObjects.ConfigRemoteEvents)
 
@@ -25,11 +26,12 @@ function module.initAnimalSounds()
 
     for uniIndex, uni in ipairs(unicorns) do
         local sound = Utils.getFirstDescendantByName(uni, 'Sound')
-        sound.SoundId = 'rbxassetid://' .. '6442319617'
+
+        local soundId = soundConstants.animalSounds.unicorn001.soundId
+        sound.SoundId = 'rbxassetid://' .. soundId
         sound.Volume = 1
         local timePosition = 10 % uniIndex
-        print('timePosition' .. ' - start')
-        print(timePosition)
+
         sound.TimePosition = timePosition
         sound.Playing = true
     end
