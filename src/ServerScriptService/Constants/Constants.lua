@@ -14,7 +14,7 @@ if isDev then
     activeSpawn = 'Spawn-L2'
     activeSpawn = 'SpawnLocation_L3H4'
     activeSpawn = 'SpawnLocation_L3H1'
-    activeSpawn = 'UniIsland'
+    activeSpawn = 'Spawn_UniIsland'
 else
     activeSpawn = 'SpawnLocation_L3_ramp'
 end

@@ -20,14 +20,25 @@ local Terrain = require(Sss.Source.Terrain.Terrain)
 
 local module = {}
 
+function module.initAnimalSounds()
+    local unicorns = Utils.getDescendantsByName(workspace, 'Horse_001')
+
+    for uniIndex, uni in ipairs(unicorns) do
+        local sound = Utils.getFirstDescendantByName(uni, 'Sound')
+        sound.SoundId = 'rbxassetid://' .. '6442319617'
+        sound.Volume = 1
+        local timePosition = 10 % uniIndex
+        print('timePosition' .. ' - start')
+        print(timePosition)
+        sound.TimePosition = timePosition
+        sound.Playing = true
+    end
+end
+
 function module.addConveyors(level, sectorConfigs)
     local islandTemplate = Utils.getFromTemplates('IslandTemplate')
-    print('sdfafsdfas')
-    print('sdfafsdfas')
-    print('sdfafsdfas')
-    print('sdfafsdfas')
-    print('sdfafsdfas')
-    print('sdfafsdfas')
+
+    module.initAnimalSounds()
 
     local islandPositioners = Utils.getByTagInParent({parent = level, tag = 'IslandPositioner'})
     Utils.sortListByObjectKey(islandPositioners, 'Name')
