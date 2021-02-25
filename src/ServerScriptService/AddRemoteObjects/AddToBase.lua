@@ -27,13 +27,15 @@ function module.initAnimalSounds()
     for uniIndex, uni in ipairs(unicorns) do
         local sound = Utils.getFirstDescendantByName(uni, 'Sound')
 
-        local soundId = soundConstants.animalSounds.unicorn001.soundId
-        sound.SoundId = 'rbxassetid://' .. soundId
-        sound.Volume = 1
-        local timePosition = 10 % uniIndex
+        if sound then
+            local soundId = soundConstants.animalSounds.unicorn001.soundId
+            sound.SoundId = 'rbxassetid://' .. soundId
+            sound.Volume = 1
+            local timePosition = 10 % uniIndex
 
-        sound.TimePosition = timePosition
-        sound.Playing = true
+            sound.TimePosition = timePosition
+            sound.Playing = true
+        end
     end
 end
 
