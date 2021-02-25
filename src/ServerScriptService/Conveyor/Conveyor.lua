@@ -1,5 +1,5 @@
-local Sss = game:GetService("ServerScriptService")
-local CS = game:GetService("CollectionService")
+local Sss = game:GetService('ServerScriptService')
+local CS = game:GetService('CollectionService')
 
 local Utils = require(Sss.Source.Utils.U001GeneralUtils)
 local Utils3 = require(Sss.Source.Utils.U003PartsUtils)
@@ -21,9 +21,8 @@ local function initBeltPlate(props)
 
     local speed = 10
 
-    local conveyor = Utils.getFirstDescendantByName(sectorFolder, "Conveyor")
-    local beltPlateTemplate = Utils.getFirstDescendantByName(conveyor,
-                                                             "BeltPlateTemplate")
+    local conveyor = Utils.getFirstDescendantByName(sectorFolder, 'Conveyor')
+    local beltPlateTemplate = Utils.getFirstDescendantByName(conveyor, 'BeltPlateTemplate')
 
     local newBeltPlate = beltPlateTemplate:Clone()
     newBeltPlate.Parent = conveyor
@@ -33,8 +32,8 @@ local function initBeltPlate(props)
 
     -- Create a property in which to store the home position of each beltplate
     -- This will be incremented whenever a beltPlate hits the stop wall
-    local propIndex = Instance.new("IntValue", newBeltPlate)
-    propIndex.Name = "PositionIndex"
+    local propIndex = Instance.new('IntValue', newBeltPlate)
+    propIndex.Name = 'PositionIndex'
     propIndex.Value = beltPlateIndex
 
     belt.BeltWeld.Enabled = false
@@ -46,25 +45,27 @@ local function initBeltPlate(props)
     belt.CFrame = beltPlateCFrames[beltPlateIndex]
     belt.BeltWeld.Enabled = true
 
-    local letterPositioner = Utils.getFirstDescendantByName(newBeltPlate,
-                                                            "LetterPositioner")
+    local letterPositioner = Utils.getFirstDescendantByName(newBeltPlate, 'LetterPositioner')
     letterPositioner.LPWeld.Enabled = false
-    letterPositioner.Size = Vector3.new(rackLetterSize, rackLetterSize,
-                                        rackLetterSize)
+    letterPositioner.Size = Vector3.new(rackLetterSize, rackLetterSize, rackLetterSize)
 
-    letterPositioner.CFrame = Utils3.setCFrameFromDesiredEdgeOffset(
-                                  {
+    letterPositioner.CFrame =
+        Utils3.setCFrameFromDesiredEdgeOffset(
+        {
             parent = belt,
             child = letterPositioner,
             offsetConfig = {
                 useParentNearEdge = Vector3.new(1, -1, 1),
                 useChildNearEdge = Vector3.new(1, -1, 1)
             }
-        })
-
+        }
+    )
 
     local pc = belt.PrismaticConstraint
-    if sectorConfig.freezeConveyor == true then
+    if false then
+        -- if sectorConfig.freezeConveyor == true then
+        print('sectorConfig.freezeConveyor' .. ' - start')
+        print(sectorConfig.freezeConveyor)
 
         pc.Enabled = false
     else
@@ -79,13 +80,10 @@ local function initBeltPlate(props)
             local function closure(touched)
                 if db == true then
                     db = false
-                    if CS:hasTag(touched, "stop") then
-
+                    if CS:hasTag(touched, 'stop') then
                         --  destroy existing PlateWelds
                         for _, beltPlate in ipairs(beltPlates2) do
-                            local plateWelds =
-                                Utils.getDescendantsByName(beltPlate,
-                                                           "PlateWeld")
+                            local plateWelds = Utils.getDescendantsByName(beltPlate, 'PlateWeld')
                             for _, weld in ipairs(plateWelds) do
                                 weld:Destroy()
                             end
@@ -102,23 +100,21 @@ local function initBeltPlate(props)
                             end
 
                             beltPlate.PositionIndex.Value = incrementedPosition
-                            local newCFrame =
-                                beltPlateCFrames[incrementedPosition]
+                            local newCFrame = beltPlateCFrames[incrementedPosition]
 
                             -- add adjuster, because you averrun a bit because of the 1/30 sec timestep.
                             local adjuster = 0
-                            beltPlate.Belt.CFrame =
-                                newCFrame + Vector3.new(0, 0, adjuster)
+                            beltPlate.Belt.CFrame = newCFrame + Vector3.new(0, 0, adjuster)
                         end
 
-                        -- Weld each plate to the one after it
-                        -- for i = 1, #beltPlates2 - 1 do
-                        --     local weld = Instance.new("WeldConstraint")
-                        --     weld.Name = "PlateWeld"
-                        --     weld.Parent = beltPlates2[i].Belt
-                        --     weld.Part0 = beltPlates2[i].Belt
-                        --     weld.Part1 = beltPlates2[i + 1].Belt
-                        -- end
+                    -- Weld each plate to the one after it
+                    -- for i = 1, #beltPlates2 - 1 do
+                    --     local weld = Instance.new("WeldConstraint")
+                    --     weld.Name = "PlateWeld"
+                    --     weld.Parent = beltPlates2[i].Belt
+                    --     weld.Part0 = beltPlates2[i].Belt
+                    --     weld.Part1 = beltPlates2[i + 1].Belt
+                    -- end
                     end
                     db = true
                 end
@@ -142,19 +138,18 @@ local function initConveyors(miniGameState)
 
     local initComplete = false
 
-    local conveyor = Utils.getFirstDescendantByName(sectorFolder, "Conveyor")
-    local floor = Utils.getFirstDescendantByName(conveyor, "Floor")
+    local conveyor = Utils.getFirstDescendantByName(sectorFolder, 'Conveyor')
+    local floor = Utils.getFirstDescendantByName(conveyor, 'Floor')
     local numBelts = miniGameState.numBelts
-    local glassTops = Utils.getDescendantsByName(conveyor, "GlassTop")
-    local stopPlate = Utils.getFirstDescendantByName(conveyor, "Stop")
-    local topFront = Utils.getFirstDescendantByName(conveyor, "TopFront")
-    local topBack = Utils.getFirstDescendantByName(conveyor, "TopBack")
-    local sidePanel = Utils.getFirstDescendantByName(conveyor, "SidePanel")
-    local lockedDoor = Utils.getFirstDescendantByName(conveyor, "LockedDoor2")
-    local invisiWall = Utils.getFirstDescendantByName(conveyor, "InvisiWall")
-    local glassPlate2 = Utils.getFirstDescendantByName(conveyor, "GlassPlate2")
-    local mountInterface = Utils.getFirstDescendantByName(sectorFolder,
-                                                          "BaseIsland")
+    local glassTops = Utils.getDescendantsByName(conveyor, 'GlassTop')
+    local stopPlate = Utils.getFirstDescendantByName(conveyor, 'Stop')
+    local topFront = Utils.getFirstDescendantByName(conveyor, 'TopFront')
+    local topBack = Utils.getFirstDescendantByName(conveyor, 'TopBack')
+    local sidePanel = Utils.getFirstDescendantByName(conveyor, 'SidePanel')
+    local lockedDoor = Utils.getFirstDescendantByName(conveyor, 'LockedDoor2')
+    local invisiWall = Utils.getFirstDescendantByName(conveyor, 'InvisiWall')
+    local glassPlate2 = Utils.getFirstDescendantByName(conveyor, 'GlassPlate2')
+    local mountInterface = Utils.getFirstDescendantByName(sectorFolder, 'BaseIsland')
 
     local boxHeight = rackLetterSize + 2
 
@@ -162,7 +157,7 @@ local function initConveyors(miniGameState)
         local sizeX = numCol * rackLetterSize * letterSpacingFactor
         local sizeZ = numRow * rackLetterSize * letterSpacingFactor
 
-        local dummy = Instance.new("Part", sectorFolder)
+        local dummy = Instance.new('Part', sectorFolder)
         dummy.Size = Vector3.new(sizeX, 1, sizeZ)
         dummy.Anchored = false
         return dummy
@@ -190,8 +185,9 @@ local function initConveyors(miniGameState)
         local childWeldsRight = Utils.disableEnabledWelds(rightWall)
         local parentWelds = Utils.disableEnabledWelds(floor3)
 
-        frontWall.CFrame = Utils3.setCFrameFromDesiredEdgeOffset(
-                               {
+        frontWall.CFrame =
+            Utils3.setCFrameFromDesiredEdgeOffset(
+            {
                 parent = floor3,
                 child = frontWall,
                 offsetConfig = {
@@ -199,7 +195,8 @@ local function initConveyors(miniGameState)
                     useChildNearEdge = Vector3.new(1, -1, 0),
                     offsetAdder = Vector3.new(0, 0, 0)
                 }
-            })
+            }
+        )
         -- backWall.CFrame = Utils3.setCFrameFromDesiredEdgeOffset(
         --                       {
         --         parent = floor3,
@@ -211,8 +208,9 @@ local function initConveyors(miniGameState)
         --         }
         --     })
 
-        leftWall.CFrame = Utils3.setCFrameFromDesiredEdgeOffset(
-                              {
+        leftWall.CFrame =
+            Utils3.setCFrameFromDesiredEdgeOffset(
+            {
                 parent = floor3,
                 child = leftWall,
                 offsetConfig = {
@@ -220,10 +218,12 @@ local function initConveyors(miniGameState)
                     useChildNearEdge = Vector3.new(0, -1, -1),
                     offsetAdder = Vector3.new(0, 0, 0)
                 }
-            })
+            }
+        )
 
-        rightWall.CFrame = Utils3.setCFrameFromDesiredEdgeOffset(
-                               {
+        rightWall.CFrame =
+            Utils3.setCFrameFromDesiredEdgeOffset(
+            {
                 parent = floor3,
                 child = rightWall,
                 offsetConfig = {
@@ -231,13 +231,22 @@ local function initConveyors(miniGameState)
                     useChildNearEdge = Vector3.new(0, -1, 1),
                     offsetAdder = Vector3.new(0, 0, 0)
                 }
-            })
+            }
+        )
 
-        for _, weld in ipairs(childWeldsFront) do weld.Enabled = true end
+        for _, weld in ipairs(childWeldsFront) do
+            weld.Enabled = true
+        end
         -- for _, weld in ipairs(childWeldsBack) do weld.Enabled = true end
-        for _, weld in ipairs(childWeldsLeft) do weld.Enabled = true end
-        for _, weld in ipairs(childWeldsRight) do weld.Enabled = true end
-        for _, weld in ipairs(parentWelds) do weld.Enabled = true end
+        for _, weld in ipairs(childWeldsLeft) do
+            weld.Enabled = true
+        end
+        for _, weld in ipairs(childWeldsRight) do
+            weld.Enabled = true
+        end
+        for _, weld in ipairs(parentWelds) do
+            weld.Enabled = true
+        end
         invisiWall:Destroy()
     end
 
@@ -247,14 +256,14 @@ local function initConveyors(miniGameState)
         local adders = paddedDummyLength * 1 + conveyorPadding * 2
         local totalLength = paddedDummyLength * numBelts + adders
 
-        floor.Size = Vector3.new(totalLength, 1,
-                                 dummy.Size.Z + conveyorPadding * 2)
+        floor.Size = Vector3.new(totalLength, 1, dummy.Size.Z + conveyorPadding * 2)
         mountInterface.Size = floor.Size
         mountInterface.CFrame = floor.CFrame
 
         -- First size the mount, the position the mount with the positioner
-        mountInterface.CFrame = Utils3.setCFrameFromDesiredEdgeOffset(
-                                    {
+        mountInterface.CFrame =
+            Utils3.setCFrameFromDesiredEdgeOffset(
+            {
                 parent = islandPositioner,
                 child = mountInterface,
                 offsetConfig = {
@@ -262,13 +271,15 @@ local function initConveyors(miniGameState)
                     useChildNearEdge = Vector3.new(1, -1, 1),
                     offsetAdder = Vector3.new(0, 0, 0)
                 }
-            })
+            }
+        )
 
         local glassPlateWelds = Utils.disableEnabledWelds(glassPlate2)
 
         glassPlate2.Size = Vector3.new(floor.Size.X - 12, 0.2, floor.Size.Z - 4)
-        glassPlate2.CFrame = Utils3.setCFrameFromDesiredEdgeOffset(
-                                 {
+        glassPlate2.CFrame =
+            Utils3.setCFrameFromDesiredEdgeOffset(
+            {
                 parent = floor,
                 child = glassPlate2,
                 offsetConfig = {
@@ -276,19 +287,22 @@ local function initConveyors(miniGameState)
                     useChildNearEdge = Vector3.new(0, 1, 0),
                     offsetAdder = Vector3.new(0, rackLetterSize + 2, 0)
                 }
-            })
-        for _, weld in ipairs(glassPlateWelds) do weld.Enabled = true end
+            }
+        )
+        for _, weld in ipairs(glassPlateWelds) do
+            weld.Enabled = true
+        end
         return floor
     end
 
     local function setStop(stopPlate2, dummy, floor2)
-        stopPlate2.Size = Vector3.new(stopPlate2.Size.X, stopPlate2.Size.Y,
-                                      dummy.Size.Z)
+        stopPlate2.Size = Vector3.new(stopPlate2.Size.X, stopPlate2.Size.Y, dummy.Size.Z)
 
         local stopPlateWelds = Utils.disableEnabledWelds(stopPlate2)
         local floorWelds = Utils.disableEnabledWelds(floor2)
-        stopPlate2.CFrame = Utils3.setCFrameFromDesiredEdgeOffset(
-                                {
+        stopPlate2.CFrame =
+            Utils3.setCFrameFromDesiredEdgeOffset(
+            {
                 parent = floor2,
                 child = stopPlate2,
                 offsetConfig = {
@@ -296,9 +310,14 @@ local function initConveyors(miniGameState)
                     useChildNearEdge = Vector3.new(1, -1, 0),
                     offsetAdder = Vector3.new(0, 0, 0)
                 }
-            })
-        for _, weld in ipairs(stopPlateWelds) do weld.Enabled = true end
-        for _, weld in ipairs(floorWelds) do weld.Enabled = true end
+            }
+        )
+        for _, weld in ipairs(stopPlateWelds) do
+            weld.Enabled = true
+        end
+        for _, weld in ipairs(floorWelds) do
+            weld.Enabled = true
+        end
         return stopPlate2
     end
 
@@ -307,8 +326,9 @@ local function initConveyors(miniGameState)
 
         local childWelds = Utils.disableEnabledWelds(topFront2)
         local parentWelds = Utils.disableEnabledWelds(floor2)
-        topFront2.CFrame = Utils3.setCFrameFromDesiredEdgeOffset(
-                               {
+        topFront2.CFrame =
+            Utils3.setCFrameFromDesiredEdgeOffset(
+            {
                 parent = floor2,
                 child = topFront2,
                 offsetConfig = {
@@ -316,10 +336,15 @@ local function initConveyors(miniGameState)
                     useChildNearEdge = Vector3.new(1, -1, 0),
                     offsetAdder = Vector3.new(0, boxHeight, 0)
                 }
-            })
+            }
+        )
 
-        for _, weld in ipairs(childWelds) do weld.Enabled = true end
-        for _, weld in ipairs(parentWelds) do weld.Enabled = true end
+        for _, weld in ipairs(childWelds) do
+            weld.Enabled = true
+        end
+        for _, weld in ipairs(parentWelds) do
+            weld.Enabled = true
+        end
         return topFront2
     end
 
@@ -328,8 +353,9 @@ local function initConveyors(miniGameState)
 
         local childWelds = Utils.disableEnabledWelds(child)
         local parentWelds = Utils.disableEnabledWelds(floor2)
-        child.CFrame = Utils3.setCFrameFromDesiredEdgeOffset(
-                           {
+        child.CFrame =
+            Utils3.setCFrameFromDesiredEdgeOffset(
+            {
                 parent = floor2,
                 child = child,
                 offsetConfig = {
@@ -337,9 +363,14 @@ local function initConveyors(miniGameState)
                     useChildNearEdge = Vector3.new(-1, -1, 0),
                     offsetAdder = Vector3.new(0, boxHeight, 0)
                 }
-            })
-        for _, weld in ipairs(childWelds) do weld.Enabled = true end
-        for _, weld in ipairs(parentWelds) do weld.Enabled = true end
+            }
+        )
+        for _, weld in ipairs(childWelds) do
+            weld.Enabled = true
+        end
+        for _, weld in ipairs(parentWelds) do
+            weld.Enabled = true
+        end
         return child
     end
 
@@ -352,8 +383,9 @@ local function initConveyors(miniGameState)
         local childWelds = Utils.disableEnabledWelds(child)
         local childWelds2 = Utils.disableEnabledWelds(duplicateSidePanel)
         local parentWelds = Utils.disableEnabledWelds(floor2)
-        child.CFrame = Utils3.setCFrameFromDesiredEdgeOffset(
-                           {
+        child.CFrame =
+            Utils3.setCFrameFromDesiredEdgeOffset(
+            {
                 parent = floor2,
                 child = child,
                 offsetConfig = {
@@ -361,10 +393,12 @@ local function initConveyors(miniGameState)
                     useChildNearEdge = Vector3.new(-1, -1, 1),
                     offsetAdder = Vector3.new(0, 0, 0)
                 }
-            })
+            }
+        )
 
-        duplicateSidePanel.CFrame = Utils3.setCFrameFromDesiredEdgeOffset(
-                                        {
+        duplicateSidePanel.CFrame =
+            Utils3.setCFrameFromDesiredEdgeOffset(
+            {
                 parent = floor2,
                 child = duplicateSidePanel,
                 offsetConfig = {
@@ -372,11 +406,18 @@ local function initConveyors(miniGameState)
                     useChildNearEdge = Vector3.new(1, -1, 1),
                     offsetAdder = Vector3.new(0, 0, 0)
                 }
-            })
+            }
+        )
 
-        for _, weld in ipairs(childWelds2) do weld.Enabled = true end
-        for _, weld in ipairs(childWelds) do weld.Enabled = true end
-        for _, weld in ipairs(parentWelds) do weld.Enabled = true end
+        for _, weld in ipairs(childWelds2) do
+            weld.Enabled = true
+        end
+        for _, weld in ipairs(childWelds) do
+            weld.Enabled = true
+        end
+        for _, weld in ipairs(parentWelds) do
+            weld.Enabled = true
+        end
         return child
     end
 
@@ -390,11 +431,11 @@ local function initConveyors(miniGameState)
         setSidePanels(sidePanel, dummy, floor2)
 
         for beltPlateIndex = 1, numBelts do
-            local offset = Vector3.new(-(dummy.Size.X + beltPlateSpacing) *
-                                           (beltPlateIndex - 0), 0, 0)
+            local offset = Vector3.new(-(dummy.Size.X + beltPlateSpacing) * (beltPlateIndex - 0), 0, 0)
 
-            local beltPlateCframe = Utils3.setCFrameFromDesiredEdgeOffset(
-                                        {
+            local beltPlateCframe =
+                Utils3.setCFrameFromDesiredEdgeOffset(
+                {
                     parent = stopPlate2,
                     child = dummy,
                     offsetConfig = {
@@ -402,7 +443,8 @@ local function initConveyors(miniGameState)
                         useChildNearEdge = Vector3.new(1, 0, 0),
                         offsetAdder = offset
                     }
-                })
+                }
+            )
             table.insert(beltPlateCFrames, beltPlateCframe)
         end
 
@@ -414,11 +456,9 @@ local function initConveyors(miniGameState)
             initBeltPlate(beltPlateProps)
         end
 
-        local beltPlateTemplate = Utils.getFirstDescendantByName(conveyor,
-                                                                 "BeltPlateTemplate")
+        local beltPlateTemplate = Utils.getFirstDescendantByName(conveyor, 'BeltPlateTemplate')
         beltPlateTemplate:Destroy()
         dummy:Destroy()
-
     end
     config()
 
@@ -426,7 +466,7 @@ local function initConveyors(miniGameState)
     local startAll = true
 
     if startAll then
-        local beltPlates = Utils.getDescendantsByName(conveyor, "NewBeltPlate")
+        local beltPlates = Utils.getDescendantsByName(conveyor, 'NewBeltPlate')
         for _, beltPlate in ipairs(beltPlates) do
             local belt = beltPlate.Belt
             belt.BeltWeld.Enabled = false
@@ -436,20 +476,20 @@ local function initConveyors(miniGameState)
     if not startAll then
         local function start(otherPart)
             if initComplete == false then
-                if not otherPart.Parent then return end
-                local humanoid = otherPart.Parent:FindFirstChildWhichIsA(
-                                     "Humanoid")
+                if not otherPart.Parent then
+                    return
+                end
+                local humanoid = otherPart.Parent:FindFirstChildWhichIsA('Humanoid')
                 if humanoid then
                     initComplete = true
-                    local beltPlates = Utils.getDescendantsByName(conveyor,
-                                                                  "NewBeltPlate")
+                    local beltPlates = Utils.getDescendantsByName(conveyor, 'NewBeltPlate')
                     for _, beltPlate in ipairs(beltPlates) do
                         local belt = beltPlate.Belt
                         belt.BeltWeld.Enabled = false
                     end
 
                     local player = Utils.getPlayerFromHumanoid(humanoid)
-                    Utils.destroyTools(player, "key%-%-")
+                    Utils.destroyTools(player, 'key%-%-')
                 end
             end
         end
