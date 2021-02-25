@@ -13,78 +13,28 @@ local sector1Config = {
     }
 }
 
-local sector2Config = {
-    words = {
-        'CAP', --
-        'GAP', --
-        'LAP', --
-        'MAP' --
-    }
-}
-
-local sector3Config = {
-    words = {
-        'VAN', --
-        'RAN', --
-        'CAN', --
-        'AN' --
-    }
-}
-
-local sector4Config = {
-    words = {
-        'PAN', --
-        'DAN', --
-        'FAN', --
-        'TAN', --
-        'JAN' --
-    }
-}
-local sector5Config = {
-    words = {
-        'SAT', --
-        'RAT', --
-        'VAT', --
-        'AT' --
-    }
-}
-
-local sector6Config = {
-    words = {
-        'CAT', --
-        'HAT', --
-        'MAT', --
-        'PAT' --
-    }
-}
-
 local sectorConfigs = {
-    sector1Config, --
-    sector2Config, --
-    sector3Config, --
-    sector4Config, --
-    sector5Config, --
-    sector6Config --
+    sector1Config --
 }
 
 local hexIslandConfigs = {
     {
         hexNum = 1,
-        statueConfigs = {
-            Liz = {
-                sentence = {'I', 'SEE', 'A', 'CAT'},
-                character = 'lizHappy',
-                -- songId = '6342102168',
-                keyColor = Colors.colors.yellow
-            }
-        },
+        statueConfigs = {},
         bridgeConfigs = {
             {item = nil},
             {
                 item = 'Rink',
                 itemConfig = {
-                    words = {'NOT', 'CAT'},
-                    grabbers = {'NOT', 'CAT'}
+                    grabbers = {'CAT'}
+                }
+            },
+            {item = nil},
+            {item = nil},
+            {
+                item = 'Rink',
+                itemConfig = {
+                    grabbers = {'BAT'}
                 }
             },
             {item = nil}
@@ -92,20 +42,15 @@ local hexIslandConfigs = {
     },
     {
         hexNum = 2,
-        statueConfigs = {
-            Kat = {
-                sentence = {'NOT', 'A', 'CAT'},
-                character = 'katScared',
-                songId = '6342102168'
-            }
-        },
         bridgeConfigs = {
+            {item = nil},
+            {item = nil},
+            {item = nil},
             {item = nil},
             {
                 item = 'Rink',
                 itemConfig = {
-                    words = {'RUN', 'BUN'},
-                    grabbers = {'RUN', 'BUN'}
+                    grabbers = {'RAT'}
                 }
             },
             {item = nil}
@@ -113,32 +58,80 @@ local hexIslandConfigs = {
     },
     {
         hexNum = 3,
-        statueConfigs = {
-            Kat = {
-                sentence = {'RUN', 'TO', 'THE', 'BUN'},
-                character = 'katScared'
-                -- songId = '6342102168'
+        bridgeConfigs = {
+            {item = nil},
+            {item = nil},
+            {item = nil},
+            {item = nil},
+            {
+                item = 'Rink',
+                itemConfig = {
+                    grabbers = {'SAT'}
+                },
+                {item = nil}
             }
         }
-        -- bridgeConfigs = {
-        --     {item = nil},
-        --     {
-        --         item = 'Rink',
-        --         itemConfig = {
-        --             words = {'SEE', 'CAT'},
-        --             grabbers = {'SEE', 'CAT'}
-        --         }
-        --     },
-        --     {item = nil}
-        -- }
+    },
+    {
+        hexNum = 4,
+        bridgeConfigs = {
+            {item = nil},
+            {
+                item = 'Rink',
+                itemConfig = {
+                    grabbers = {'PAT'}
+                    -- words = {'CAT', 'RAT'}
+                }
+            },
+            {item = nil},
+            {item = nil},
+            {
+                item = 'Rink',
+                itemConfig = {
+                    grabbers = {'CAT'}
+                }
+            },
+            {item = nil}
+        }
+    },
+    {
+        hexNum = 5,
+        bridgeConfigs = {
+            {item = nil},
+            {item = nil},
+            {item = nil},
+            {item = nil},
+            {
+                item = 'Rink',
+                itemConfig = {
+                    grabbers = {'MAT'}
+                }
+            },
+            {item = nil}
+        }
+    },
+    {
+        hexNum = 6,
+        bridgeConfigs = {
+            {item = nil},
+            {
+                item = 'Rink',
+                itemConfig = {
+                    grabbers = {'PAT'}
+                }
+            },
+            {item = nil},
+            {item = nil},
+            {
+                item = 'Rink',
+                itemConfig = {
+                    grabbers = {'CAT'}
+                },
+                {item = nil}
+            }
+        }
     }
 }
-
--- Troll = {
---     sentence = {'TROLL', 'NEED', 'GOLD'},
---     character = 'babyTroll04'
---     -- songId = '6338745550'
--- },
 
 module.sectorConfigs = sectorConfigs
 module.hexIslandConfigs = hexIslandConfigs
