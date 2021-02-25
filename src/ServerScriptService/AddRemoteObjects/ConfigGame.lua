@@ -26,10 +26,6 @@ local function configPlayers()
 
         local updateWordGuiRE2 = RS:WaitForChild(Const_Client.RemoteEvents.UpdateWordGuiRE)
 
-        -- I need to get this dynamicaly, so it's not all the same object
-        -- I need to get this dynamicaly, so it's not all the same object
-        -- I need to get this dynamicaly, so it's not all the same object
-
         local gameState = PlayerStatManager.getGameState(player)
         local targetWords
 
