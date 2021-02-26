@@ -22,6 +22,20 @@ function module.initPuck(puck)
     puck.WeldConstraint:Destroy()
 end
 
+function module.initPuck2(puck)
+    print('initPuck2')
+    print('initPuck2')
+    print('initPuck2')
+    local thrust = Instance.new('BodyThrust', puck)
+    thrust.Force = Vector3.new(0, 0, 2000)
+    thrust.Name = 'qqq'
+
+    local av = Instance.new('BodyAngularVelocity', puck)
+    av.MaxTorque = Vector3.new(1000000, 1000000, 1000000)
+    av.AngularVelocity = Vector3.new(0, 1, 0)
+    av.P = 1250
+end
+
 function module.initRink(rink)
     local puck = rink.Puck.PrimaryPart
 

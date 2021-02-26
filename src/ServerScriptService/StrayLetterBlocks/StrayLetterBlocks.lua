@@ -3,7 +3,7 @@ local Sss = game:GetService('ServerScriptService')
 local Utils = require(Sss.Source.Utils.U001GeneralUtils)
 local Utils3 = require(Sss.Source.Utils.U003PartsUtils)
 local LetterUtils = require(Sss.Source.Utils.U004LetterUtils)
-
+local Rink = require(Sss.Source.Rink.Rink)
 local module = {}
 
 local function createStray(char, parentFolder, props)
@@ -71,6 +71,7 @@ local function createStray(char, parentFolder, props)
 end
 
 local function initStraysInRegions(props)
+    print('initStraysInRegions')
     local parentFolder = props.parentFolder
     local strayRegions = Utils.getByTagInParent({parent = parentFolder, tag = 'StrayRegion'})
 
@@ -108,6 +109,7 @@ local function initStraysInRegions(props)
 
         for _, stray in ipairs(strays) do
             stray.CanCollide = true
+            -- Rink.initPuck2(stray)
 
             -- stray.Size = Vector3.new(4, 4, 4)
         end
